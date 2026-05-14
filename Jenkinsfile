@@ -8,7 +8,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
         DOCKER_REGISTRY = 'docker.io'
-        DOCKER_USERNAME = 'aditya01237'
+        DOCKER_USERNAME = 'abhinav112001'
         JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
         SERVICES = 'eureka-server api-gateway auth-service patient-service provider-service appointment-service qr-service swasthya-frontend doctor-frontend'
