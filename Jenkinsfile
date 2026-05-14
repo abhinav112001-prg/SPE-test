@@ -37,7 +37,7 @@ pipeline {
         stage('Build & Push Docker Images') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS_ID, usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                         sh "echo \$PASS | docker login -u \$USER --password-stdin"
                         def servicesList = env.SERVICES.split(' ')
                         for (service in servicesList) {
