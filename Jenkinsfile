@@ -12,6 +12,7 @@ pipeline {
         JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
         SERVICES = 'eureka-server api-gateway auth-service patient-service provider-service appointment-service qr-service swasthya-frontend doctor-frontend'
+        KUBECONFIG = '/var/lib/jenkins/.kube/config'
     }
 
     stages {
@@ -45,9 +46,21 @@ pipeline {
                                 def imageName = "${env.DOCKER_USERNAME}/${service}:latest"
                                 sh "docker build -t ${imageName} ."
                                 sh "docker push ${imageName}"
+                                // Remove local image after pushing to save disk space
+                                sh "docker rmi ${imageName} || true"
                             }
                         }
                     }
+                }
+            }
+        }
+
+        stage('Docker Cleanup') {
+            steps {
+                script {
+                    // Prune dangling images and build cache to reclaim disk space
+                    sh 'docker image prune -f'
+                    sh 'docker builder prune -f'
                 }
             }
         }
